@@ -1,4 +1,5 @@
 from django.db import models
+from decimal import Decimal
 
 from store.models import Product, Variation
 
@@ -21,7 +22,7 @@ class CartItem(models.Model):
 
 
     def sub_total(self):
-        return self.product.price * self.quantity
+        return Decimal(self.product.price) * Decimal(self.quantity)
 
 
     def __unicode__(self):

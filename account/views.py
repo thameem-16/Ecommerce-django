@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 from account.models import Account
 from .forms import RegisterationForm
+from store.models import Order
 
 
 def register(request):
@@ -19,7 +20,8 @@ def register(request):
             user = Account.objects.create_user(first_name=first_name, last_name=last_name, email=email, username=username, password=password)
             user.phone_number = phone_number
             user.save()
-            messages.success(request, 'Registration Successful.')
+            messages.success(request, 'Registration Successful. Please login.')
+            return redirect('login')
 
 
     else:
@@ -51,4 +53,14 @@ def logout(request):
     auth.logout(request)
     messages.success(request, 'You are Logged out.')
     return redirect('login')
+
+
+
+@login_required(login_url='login')
+def dashboard(request):
+    orders = Order.objects.filter(user=request.user).order_by('-created_at')
+    context = {
+        'orders': orders,
+    }
+    return render(request, 'accounts/dashboard.html', context)
 

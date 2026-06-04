@@ -139,3 +139,7 @@ MESSAGE_TAGS ={
     messages.ERROR: 'danger',
 }
 
+# Development email backend (prints emails to console)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+DEFAULT_FROM_EMAIL = 'webmaster@localhost'
+

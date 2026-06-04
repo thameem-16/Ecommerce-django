@@ -49,7 +49,7 @@ class Account(AbstractBaseUser):
     last_login    =models.DateTimeField(auto_now_add=True)
     is_admin      =models.BooleanField(default=False)
     is_staff      =models.BooleanField(default=False)
-    is_active     =models.BooleanField(default=False)
+    is_active     =models.BooleanField(default=True)
     is_superadmin  =models.BooleanField(default=False)
 
     USERNAME_FIELD = 'email'
@@ -65,3 +65,18 @@ class Account(AbstractBaseUser):
     
     def has_module_perms(self,add_label):
         return True
+
+
+class Address(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    phone = models.CharField(max_length=50, blank=True)
+    is_default = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.email} - {self.city}, {self.country}"

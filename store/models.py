@@ -1,13 +1,15 @@
 from django.db import models
 from django.urls import reverse
+from decimal import Decimal
 from catagory.models import Catagory
+from account.models import Account
 
 
 class Product(models.Model):
     product_name    = models.CharField(max_length=200, unique=True)
     slug            = models.SlugField(max_length=200, unique=True)
-    description     = models.TextField(max_length=500, unique=True)
-    price           = models.IntegerField()
+    description     = models.TextField(max_length=500)
+    price           = models.DecimalField(max_digits=10, decimal_places=2)
     images          = models.ImageField(upload_to='photos/products')
     stock           = models.IntegerField()
     is_available    = models.BooleanField(default=True)
@@ -30,10 +32,10 @@ class VariationManager(models.Manager):
         return super(VariationManager, self).filter(variation_category='size', is_active=True)
 
 
-variation_category_choice = {
-    ('color', 'color'),
-    ('size', 'size'),
-}
+variation_category_choice = (
+    ('color', 'Color'),
+    ('size', 'Size'),
+)
 
 class Variation(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -47,4 +49,59 @@ class Variation(models.Model):
     def __str__(self):
         return self.variation_value
     
+
+ORDER_STATUS = (
+    ('New', 'New'),
+    ('Accepted', 'Accepted'),
+    ('Completed', 'Completed'),
+    ('Cancelled', 'Cancelled'),
+)
+
+
+class Order(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    order_number = models.CharField(max_length=20)
+    first_name = models.CharField(max_length=50)
+    last_name = models.CharField(max_length=50)
+    phone = models.CharField(max_length=20)
+    email = models.EmailField(max_length=100)
+    address_line_1 = models.CharField(max_length=255)
+    address_line_2 = models.CharField(max_length=255, blank=True)
+    city = models.CharField(max_length=100)
+    state = models.CharField(max_length=100, blank=True)
+    postal_code = models.CharField(max_length=20)
+    country = models.CharField(max_length=100)
+    order_total = models.DecimalField(max_digits=10, decimal_places=2)
+    tax = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=ORDER_STATUS, default='New')
+    is_ordered = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.order_number
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    variations = models.ManyToManyField(Variation, blank=True)
+    quantity = models.IntegerField()
+    product_price = models.DecimalField(max_digits=10, decimal_places=2)
+    ordered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.product.product_name
+
+
+class Wishlist(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'product')
+
+    def __str__(self):
+        return f"{self.user.email} - {self.product.product_name}"
+
 

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y bg">
+  <div class="container">
+    <h3>Your Orders</h3>
+    {% if orders %}
+      <div class="list-group">
+        {% for order in orders %}
+          <div class="list-group-item">
+            <h5>Order: {{ order.order_number }} <small class="text-muted">{{ order.created_at }}</small></h5>
+            <p>Status: {{ order.status }}</p>
+            <p>Total: ${{ order.order_total }}</p>
+            <a href="#" class="btn btn-sm btn-outline-primary">View details</a>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>You have no orders yet.</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

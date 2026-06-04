@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y bg">
+  <div class="container">
+    <div class="row">
+      <main class="col-md-8">
+        <h3>Checkout</h3>
+        <form method="post">
+          {% csrf_token %}
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>First name</label>
+              <input type="text" name="first_name" class="form-control" value="{{request.user.first_name}}" required>
+            </div>
+            <div class="form-group col-md-6">
+              <label>Last name</label>
+              <input type="text" name="last_name" class="form-control" value="{{request.user.last_name}}" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Phone</label>
+            <input type="text" name="phone" class="form-control" value="{{request.user.phone_number}}">
+          </div>
+
+          <div class="form-group">
+            <label>Address line 1</label>
+            <input type="text" name="address_line_1" class="form-control" required>
+          </div>
+
+          <div class="form-group">
+            <label>Address line 2</label>
+            <input type="text" name="address_line_2" class="form-control">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>City</label>
+              <input type="text" name="city" class="form-control" required>
+            </div>
+            <div class="form-group col-md-4">
+              <label>State</label>
+              <input type="text" name="state" class="form-control">
+            </div>
+            <div class="form-group col-md-2">
+              <label>Postal</label>
+              <input type="text" name="postal_code" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Country</label>
+            <input type="text" name="country" class="form-control" required>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Place Order</button>
+        </form>
+      </main>
+
+      <aside class="col-md-4">
+        <div class="card">
+          <div class="card-body">
+            <h5>Order Summary</h5>
+            <dl class="dlist-align">
+              <dt>Subtotal:</dt>
+              <dd class="text-right">${{ total }}</dd>
+            </dl>
+            <dl class="dlist-align">
+              <dt>Tax:</dt>
+              <dd class="text-right">${{ tax }}</dd>
+            </dl>
+            <hr>
+            <dl class="dlist-align">
+              <dt>Total:</dt>
+              <dd class="text-right"><strong>${{ grand_total }}</strong></dd>
+            </dl>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

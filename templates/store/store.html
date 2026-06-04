@@ -15,6 +15,7 @@
     <div class="row">
       <aside class="col-md-3">
         <div class="card">
+          <form method="get">
           <article class="filter-group">
             <header class="card-header">
               <a
@@ -28,7 +29,7 @@
                 <h6 class="title">Categories</h6>
               </a>
             </header>
-            <div class="filter-content collapse show" id="collapse_1" style="">
+            <div class="filter-content collapse show" id="collapse_1">
               <div class="card-body">
                 <ul class="list-menu">
                   <li><a href="{% url 'store' %}">All Products</a></li>
@@ -46,6 +47,30 @@
               <a
                 href="#"
                 data-toggle="collapse"
+                data-target="#collapse_color"
+                aria-expanded="true"
+                class=""
+              >
+                <i class="icon-control fa fa-chevron-down"></i>
+                <h6 class="title">Colors</h6>
+              </a>
+            </header>
+            <div class="filter-content collapse show" id="collapse_color">
+              <div class="card-body">
+                <select name="color" class="form-control">
+                  <option value="">All colors</option>
+                  {% for c in available_colors %}
+                    <option value="{{ c|lower }}" {% if request.GET.color == c|lower %}selected{% endif %}>{{ c|capfirst }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </article>
+          <article class="filter-group">
+            <header class="card-header">
+              <a
+                href="#"
+                data-toggle="collapse"
                 data-target="#collapse_4"
                 aria-expanded="true"
                 class=""
@@ -54,27 +79,14 @@
                 <h6 class="title">Sizes</h6>
               </a>
             </header>
-            <div class="filter-content collapse show" id="collapse_4" style="">
+              <div class="filter-content collapse show" id="collapse_4">
               <div class="card-body">
-                <label class="checkbox-btn">
-                  <input type="checkbox" />
-                  <span class="btn btn-light"> XS </span>
-                </label>
-
-                <label class="checkbox-btn">
-                  <input type="checkbox" />
-                  <span class="btn btn-light"> SM </span>
-                </label>
-
-                <label class="checkbox-btn">
-                  <input type="checkbox" />
-                  <span class="btn btn-light"> LG </span>
-                </label>
-
-                <label class="checkbox-btn">
-                  <input type="checkbox" />
-                  <span class="btn btn-light"> XXL </span>
-                </label>
+                <select name="size" class="form-control mb-2">
+                  <option value="">All sizes</option>
+                  {% for s in available_sizes %}
+                    <option value="{{ s|lower }}" {% if request.GET.size == s|lower %}selected{% endif %}>{{ s|capfirst }}</option>
+                  {% endfor %}
+                </select>
               </div>
               <!-- card-body.// -->
             </div>
@@ -94,33 +106,16 @@
                 <h6 class="title">Price range</h6>
               </a>
             </header>
-            <div class="filter-content collapse show" id="collapse_3" style="">
+            <div class="filter-content collapse show" id="collapse_3">
               <div class="card-body">
                 <div class="form-row">
                   <div class="form-group col-md-6">
                     <label>Min</label>
-                    <!-- <input class="form-control" placeholder="$0" type="number"> -->
-                    <select class="mr-2 form-control">
-                      <option value="0">$0</option>
-                      <option value="50">$50</option>
-                      <option value="100">$100</option>
-                      <option value="150">$150</option>
-                      <option value="200">$200</option>
-                      <option value="500">$500</option>
-                      <option value="1000">$1000</option>
-                    </select>
+                    <input class="form-control" placeholder="$0" type="number" name="min_price" value="{{ request.GET.min_price }}">
                   </div>
                   <div class="form-group text-right col-md-6">
                     <label>Max</label>
-                    <select class="mr-2 form-control">
-                      <option value="50">$50</option>
-                      <option value="100">$100</option>
-                      <option value="150">$150</option>
-                      <option value="200">$200</option>
-                      <option value="500">$500</option>
-                      <option value="1000">$1000</option>
-                      <option value="2000">$2000+</option>
-                    </select>
+                    <input class="form-control" placeholder="$0" type="number" name="max_price" value="{{ request.GET.max_price }}">
                   </div>
                 </div>
                 <!-- form-row.// -->
@@ -129,6 +124,7 @@
               <!-- card-body.// -->
             </div>
           </article>
+          </form>
           <!-- filter-group .// -->
         </div>
         <!-- card.// -->

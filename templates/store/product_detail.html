@@ -59,6 +59,7 @@
 			<h3 class="text-danger">Out Of Stock</h3>
 			{%else%}
 				<button class="btn  btn-primary" type="submit"> <span class="text">Add to Cart</span> <i class="fas fa-shopping-cart"></i></button>
+				<a href="{% url 'add_wishlist' single_product.id %}" class="btn btn-outline-secondary ml-2">Add to Wishlist</a>
 			{%endif%}
 		</article> <!-- product-info-aside .// -->
 	</form>
@@ -79,7 +80,7 @@
 		<div class="icontext w-100">
 			<img src="{% static './images/avatars/avatar2.jpg' %}" class="img-xs icon rounded-circle">
 			<div class="text">
-				<span class="date text-muted float-md-right">24.04.2020 </span>  
+				<span class="date text-muted float-md-right">24.04.2025 </span>  
 				<h6 class="mb-1">Mike John </h6>
 				
 			</div>
