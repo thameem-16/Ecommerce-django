@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="section-content padding-y bg">
+  <div class="container">
+    <h3>Order Details - {{ order.order_number }}</h3>
+    <p>Placed: {{ order.created_at }} | Status: {{ order.status }}</p>
+    <p>Name: {{ order.first_name }} {{ order.last_name }}</p>
+    <p>Shipping address: {{ order.address_line_1 }} {% if order.address_line_2 %}, {{ order.address_line_2 }}{% endif %}, {{ order.city }}, {{ order.country }}</p>
+    <hr />
+
+    <h5>Items</h5>
+    <div class="list-group">
+      {% for item in order_items %}
+        <div class="list-group-item">
+          <div class="row">
+            <div class="col-md-2">
+              <img src="{{ item.product.images.url }}" class="img-sm" alt="{{ item.product.product_name }}">
+            </div>
+            <div class="col-md-8">
+              <h6>{{ item.product.product_name }}</h6>
+              <p>Quantity: {{ item.quantity }} | Price: ${{ item.product_price }}</p>
+              {% if item.variations.all %}
+                <p>Variations: {% for v in item.variations.all %} {{ v.variation_value }}{% if not forloop.last %}, {% endif %}{% endfor %}</p>
+              {% endif %}
+            </div>
+            <div class="col-md-2 text-right">
+              <p>${{ item.product_price|floatformat:2 }}</p>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <hr />
+    <p class="text-right">Subtotal: ${{ order.order_total }}</p>
+    <a href="{% url 'order_history' %}" class="btn btn-outline-secondary">Back to Orders</a>
+  </div>
+</section>
+{% endblock %}

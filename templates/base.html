@@ -64,10 +64,11 @@
     </script>
   </head>
   <body>
-    
     {% include 'includes/navbar.html' %}
 
-    {% block content %} {% endblock %}
+    <main class="content-body">
+      {% block content %}{% endblock %}
+    </main>
 
     {% include 'includes/footer.html' %}
 

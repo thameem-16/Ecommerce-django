@@ -11,7 +11,7 @@
             <h5>Order: {{ order.order_number }} <small class="text-muted">{{ order.created_at }}</small></h5>
             <p>Status: {{ order.status }}</p>
             <p>Total: ${{ order.order_total }}</p>
-            <a href="#" class="btn btn-sm btn-outline-primary">View details</a>
+            <a href="{% url 'order_detail' order.id %}" class="btn btn-sm btn-outline-primary">View details</a>
           </div>
         {% endfor %}
       </div>

@@ -179,6 +179,17 @@ def order_history(request):
 
 
 @login_required(login_url='login')
+def order_detail(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
+    order_items = OrderItem.objects.filter(order=order)
+    context = {
+        'order': order,
+        'order_items': order_items,
+    }
+    return render(request, 'store/order_detail.html', context)
+
+
+@login_required(login_url='login')
 def add_wishlist(request, product_id):
     product = get_object_or_404(Product, id=product_id)
     from account.models import Account
